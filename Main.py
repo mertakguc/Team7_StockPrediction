@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
+from StockMarketData import StockMarketData
 
 def ParseJSONToDataFrame(data):
     df = pd.DataFrame.from_dict(data['Time Series (Daily)'], orient='index') # parse Json to DataFrame
@@ -22,3 +23,15 @@ def CreateDataset(X, y, time_steps=1):
         Xs.append(v)
         ys.append(y.iloc[i + time_steps])
     return np.array(Xs), np.array(ys)
+
+stockMarketData = StockMarketData("savedJSONFile.json") #if json file doesn't exist, it creates new json file
+
+data = stockMarketData.ExtractDataJSON()
+df = ParseJSONToDataFrame(data)
+scaled_df = CreateNormalizedData(df)
+
+
+# splitting data to test and train.
+train_size = int(len(scaled_df) * 0.8)
+test_size = len(scaled_df) - train_size
+train, test = scaled_df.iloc[0:train_size], scaled_df.iloc[train_size:len(scaled_df)]
