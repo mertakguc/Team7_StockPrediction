@@ -78,3 +78,22 @@ scaler = MinMaxScaler(feature_range=(0, 1))
 scaler.fit_transform(df[['close']])
 predicted_prices = scaler.inverse_transform(predicted.reshape(-1, 1))
 real_prices = scaler.inverse_transform(y_test.reshape(-1, 1))
+
+mse = mean_squared_error(real_prices, predicted_prices)
+rmse = sqrt(mse)
+accuracy = max(0, 100 - (rmse / np.mean(real_prices[:, 0]) * 100))
+
+print(f'Test MSE: {mse}')
+print(f'Test RMSE: {rmse}')
+print("Accuracy" + str(accuracy))
+
+# actual and predicted stock market history data
+
+plt.figure(figsize=(10,6))
+plt.plot(real_prices, label='Actual Prices')
+plt.plot(predicted_prices, label='Predicted Prices')
+plt.title('Price Prediction')
+plt.xlabel('Time')
+plt.ylabel('Price')
+plt.legend()
+plt.show()
