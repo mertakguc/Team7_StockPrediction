@@ -1,9 +1,12 @@
+from StockMarketData import StockMarketData
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
-from StockMarketData import StockMarketData
 from keras.models import Sequential
 from keras.layers import LSTM, Dense, Dropout
+import matplotlib.pyplot as plt
+from sklearn.metrics import mean_squared_error
+from math import sqrt
 
 def ParseJSONToDataFrame(data):
     df = pd.DataFrame.from_dict(data['Time Series (Daily)'], orient='index') # parse Json to DataFrame
@@ -57,3 +60,21 @@ model = Sequential([
 model.compile(optimizer='adam', loss='mean_squared_error')
 
 history = model.fit(X_train, y_train, epochs=20, batch_size=64, validation_split=0.2, verbose=1)
+
+# Loss graphs
+
+plt.plot(history.history['loss'], label='Training loss')
+plt.plot(history.history['val_loss'], label='Validation loss')
+plt.title('Model Loss Progress')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.legend()
+plt.show()
+
+predicted = model.predict(X_test)
+
+# reverse scaling real values and predictions
+scaler = MinMaxScaler(feature_range=(0, 1))
+scaler.fit_transform(df[['close']])
+predicted_prices = scaler.inverse_transform(predicted.reshape(-1, 1))
+real_prices = scaler.inverse_transform(y_test.reshape(-1, 1))
