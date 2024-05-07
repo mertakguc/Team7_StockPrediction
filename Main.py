@@ -63,13 +63,13 @@ history = model.fit(X_train, y_train, epochs=20, batch_size=64, validation_split
 
 # Loss graphs
 
-plt.plot(history.history['loss'], label='Training loss')
-plt.plot(history.history['val_loss'], label='Validation loss')
-plt.title('Model Loss Progress')
-plt.ylabel('Loss')
-plt.xlabel('Epoch')
-plt.legend()
-plt.show()
+# plt.plot(history.history['loss'], label='Training loss')
+# plt.plot(history.history['val_loss'], label='Validation loss')
+# plt.title('Model Loss Progress')
+# plt.ylabel('Loss')
+# plt.xlabel('Epoch')
+# plt.legend()
+# plt.show()
 
 predicted = model.predict(X_test)
 
