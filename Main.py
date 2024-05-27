@@ -110,3 +110,21 @@ for _ in range(future_steps):
     predicted_price = model.predict(last_window)
     future_prices.append(predicted_price[0, 0])
     last_window = np.append(last_window[:, 1:, :], predicted_price.reshape(1, 1, 1), axis=1)
+
+predicted_prices = scaler.inverse_transform(np.array(future_prices).reshape(-1, 1))
+
+# future datetimes created
+last_date = scaled_df.index[0]
+future_dates = pd.date_range(start=last_date + pd.Timedelta(days=1), periods=future_steps, freq='D')
+
+
+# showing predicted stock prices in graph
+plt.figure(figsize=(12, 6))
+plt.plot(future_dates, predicted_prices, label='Predicted Prices')
+plt.title('Future Price Prediction')
+plt.xlabel('Date')
+plt.ylabel('Price')
+plt.legend()
+plt.xticks(rotation=45)
+plt.grid(True)
+plt.show()
