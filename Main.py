@@ -89,6 +89,7 @@ print("Accuracy" + str(accuracy))
 
 # actual and predicted stock market history data
 
+#################################################################################################### Historical data learning and visualization
 plt.figure(figsize=(10,6))
 plt.plot(real_prices, label='Actual Prices')
 plt.plot(predicted_prices, label='Predicted Prices')
@@ -97,3 +98,6 @@ plt.xlabel('Time')
 plt.ylabel('Price')
 plt.legend()
 plt.show()
+#####################################################################################################
+
+
