@@ -100,4 +100,13 @@ plt.legend()
 plt.show()
 #####################################################################################################
 
+future_steps = 30
 
+# predict future stock prices using last window
+last_window = scaled_df[['close']].head(window_size).values.reshape(1, window_size, 1)
+future_prices = []
+
+for _ in range(future_steps):
+    predicted_price = model.predict(last_window)
+    future_prices.append(predicted_price[0, 0])
+    last_window = np.append(last_window[:, 1:, :], predicted_price.reshape(1, 1, 1), axis=1)
